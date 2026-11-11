@@ -1,0 +1,11 @@
+export type User={email:string;name:string;role:string};
+export type Dictionary={id:string;name:string;entries:{code:string;label:string}[]};
+export type Dataset={id:string;name:string;source:string;dictionary_id:string;row_count:number;converted:number;exited:number};
+export type Study={id:string;name:string;dataset_id:string;min_support:number;max_length:number;collapse_repeats:boolean};
+export type Pattern={pattern:string[];count:number;support:number;converted_support:number|null;exited_support:number|null;support_difference:number|null};
+export type Medoid={path:string[];frequency:number;weighted_total_distance:number;mean_distance:number;journeys:number};
+export type Alignment={exited_path:string[];frequency:number;converted_path:string[];distance:number;operations:{operation:string;from:string|null;to:string|null}[]};
+export type Result={patterns:Pattern[];total_patterns:number;patterns_truncated:boolean;candidate_patterns_evaluated:number;min_count:number;group_sizes:{converted:number;exited:number};medoids:Record<string,Medoid|null>;alignments:Alignment[];unique_paths:number;distance_cache_pairs:number;dictionary:Dictionary;study:Study;journeys:number;raw_events:number;normalized_events:number;collapse_repeats:boolean;checksum:string;limitations:string[]};
+export type Run={id:string;study_id:string;status:string;result:Result;error:string};
+export type Review={id:string;run_id:string;comment:string;status:string;reviewer:string};
+export type Report={id:string;run_id:string;review_id:string;title:string};

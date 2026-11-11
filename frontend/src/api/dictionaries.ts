@@ -1,0 +1,1 @@
+import {request} from './client';import type {Dictionary} from '../types/entities';export const list=()=>request<Dictionary[]>('/dictionaries');export const create=(data:unknown)=>request<Dictionary>('/dictionaries','POST',data);
