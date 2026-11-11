@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Depends
 from src.controllers import dataset as controller
-from src.schemas.entities import DatasetInput
-from src.services.auth import current,editor,admin
+from src.schemas.entities import DatasetInput,DatasetSupplementInput,RenameDataset
+from src.services.auth import current,editor
 router=APIRouter(prefix="/datasets",tags=["datasets"])
 @router.get("")
 def list_items(user=Depends(current)): return controller.list_items()
@@ -9,9 +9,34 @@ def list_items(user=Depends(current)): return controller.list_items()
 def create(data:DatasetInput,user=Depends(editor)): return controller.create(data)
 @router.get("/{id}")
 def detail(id:str,user=Depends(current)): return controller.detail(id)
-
-from src.schemas.entities import RenameDataset
 @router.patch('/{id}')
-def rename(id:str,data:RenameDataset,user=Depends(editor)):
- from src.services.dataset import rename
- return rename(id,data)
+def rename(id:str,data:RenameDataset,user=Depends(editor)): return controller.rename(id,data)
+@router.put('/{id}',status_code=200)
+def put_supplement(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+# Supplement uploads target an existing dataset and are idempotent by batch_id.
+@router.post('/{id}/supplement',status_code=200)
+def supplement(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.post('/{id}/supplements',status_code=200)
+def supplements(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.post('/{id}/imports',status_code=200)
+def imports(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.post('/{id}/batches',status_code=200)
+def add_batch(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.post('/{id}/append',status_code=200)
+def append(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.post('/{id}/upload',status_code=200)
+def upload(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.post('/{id}/rows',status_code=200)
+def rows(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.post('/{id}/revisions',status_code=200)
+def revisions(id:str,data:DatasetSupplementInput,user=Depends(editor)): return controller.supplement(id,data)
+@router.get('/{id}/batches')
+def batches(id:str,user=Depends(current)): return controller.batches(id)
+@router.get('/{id}/supplements')
+def supplements_list(id:str,user=Depends(current)): return controller.batches(id)
+@router.get('/{id}/imports')
+def imports_list(id:str,user=Depends(current)): return controller.batches(id)
+@router.get('/{id}/quarantine')
+def quarantine(id:str,user=Depends(current)): return controller.quarantine(id)
+@router.get('/{id}/bad-rows')
+def bad_rows(id:str,user=Depends(current)): return controller.quarantine(id)

@@ -1,6 +1,10 @@
 export type User={email:string;name:string;role:string};
 export type Dictionary={id:string;name:string;entries:{code:string;label:string}[]};
-export type Dataset={id:string;name:string;source:string;dictionary_id:string;row_count:number;converted:number;exited:number};
+export type BatchIssue={line:number;journey_id:string;revision:number|string|null;reason:string};
+export type DatasetBatch={batch_id:string;source:string;kind:string;received_at:string;total_rows:number;accepted:number;ignored:number;quarantined:number;version_before:number;version_after:number;quarantined_rows:BatchIssue[];ignored_rows:BatchIssue[]};
+export type Dataset={id:string;name:string;source:string;dictionary_id:string;row_count:number;converted:number;exited:number;version:number;batch_count:number;accepted:number;ignored:number;quarantined:number;accepted_total:number;ignored_total:number;quarantined_total:number;max_revision:number;batches?:DatasetBatch[]};
+export type SupplementResult=Dataset&{dataset:Dataset;batch:DatasetBatch;accepted:number;ignored:number;quarantined:number;replay:boolean;already_applied:boolean};
+export type QuarantineRow=BatchIssue&{batch_id:string;path:string|null;outcome:string|null};
 export type Study={id:string;name:string;dataset_id:string;min_support:number;max_length:number;collapse_repeats:boolean};
 export type Pattern={pattern:string[];count:number;support:number;converted_support:number|null;exited_support:number|null;support_difference:number|null};
 export type Medoid={path:string[];frequency:number;weighted_total_distance:number;mean_distance:number;journeys:number};

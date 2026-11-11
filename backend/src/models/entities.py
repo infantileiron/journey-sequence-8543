@@ -14,6 +14,8 @@ class JourneyDataset:
  dictionary_id:str
  rows:list[dict]
  created_at:str=''
+ version:int=1
+ batches:list[dict]=field(default_factory=list)
 @dataclass
 class SequenceStudy:
  id:str
@@ -31,6 +33,9 @@ class SequenceRun:
  result:dict[str,Any]=field(default_factory=dict)
  error:str=''
  created_at:str=''
+ dataset_id:str=''
+ dataset_version:int=0
+ snapshot_rows:list[dict]=field(default_factory=list)
 @dataclass
 class PathReview:
  id:str

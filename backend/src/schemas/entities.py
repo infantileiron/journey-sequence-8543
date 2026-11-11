@@ -16,6 +16,13 @@ class DatasetInput(StrictModel):
  source:str=Field(default='gallery_paths_202611.csv',max_length=100)
  dictionary_id:str='dict-gallery'
  csv_text:str=Field(min_length=20,max_length=1000000)
+ batch_id:str|None=Field(default=None,max_length=128)
+ dataset_id:str|None=Field(default=None,max_length=128)
+ target_dataset_id:str|None=Field(default=None,max_length=128)
+class DatasetSupplementInput(StrictModel):
+ source:str=Field(default='gallery_paths_202611_supplement.csv',max_length=100)
+ csv_text:str=Field(min_length=1,max_length=1000000)
+ batch_id:str|None=Field(default=None,max_length=128)
 class RenameDataset(StrictModel):
  name:str=Field(min_length=2,max_length=100)
 class SequenceStudyInput(StrictModel):
